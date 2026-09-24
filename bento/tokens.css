@@ -1,0 +1,127 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   BENTO (Hootsuite design system) — TOKENS
+   Engineering export · HS-Bento gallery, Aug 2026, from DX
+   ══════════════════════════════════════════════════════════════════════════
+   This file is a single import point over the real, unmodified token source
+   files (copied verbatim into ./tokens/). Nothing below is re-authored or
+   invented — every custom property that exists in the system is reachable
+   through this chain. Import ONLY this file.
+
+   LOAD ORDER MATTERS. Later files reference custom properties defined in
+   earlier ones (--hs-* aliases resolve to --bento-* tokens; --bento-theme-*
+   resolve to --bento-system-* and --bento-palette-ref-*).
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* 1. PALETTE + SEMANTIC COLOR
+   --bento-palette-ref-palette-*      raw hue ramps (blue, cedar, dark-grey, …), 50–900
+   --bento-system-sys-*               semantic ramps (accent/info/negative/positive/
+                                       neutral/neutral-alt/primary/surfing/warning/discovery),
+                                       each an alias onto one palette ramp
+   --bento-theme-color-*              the tokens components actually consume
+                                       (bg-*, border-*, icon-*, text-*, opacity-*)
+   --bento-global-categorical-color-N-* (1–10)  chart/tag/network categorical fills
+   --bento-theme-color-visual-data-*  chart series colors (redefined as aliases
+                                       onto --hs-chart-color-* by chart-alias.css, §6)
+   --bento-suite-*-fill / -icon       per-product rail accent pairs (Perch, Nest,
+                                       Lumen, Parliament, Wisdom, Vigil, Settings)
+   ⚠ Only ONE color mode ships real values here — see THEME SWITCHING below. */
+@import url("./tokens/colors.css");
+
+/* 2. TYPOGRAPHY
+   --bento-theme-font-families-primary/secondary   Source Sans 3 / Montserrat Alternates
+   --bento-theme-font-size-1..8, line-heights-1..8, font-weights-{regular,semibold,bold}
+   .bento-text-{body,body-sm,button,button-sm,display-1..3,heading-1..3,
+                label,label-sm,link,link-sm,strengthening}   ready-made type classes */
+@import url("./tokens/typography.css");
+
+/* 3. LAYOUT PRIMITIVES + PER-COMPONENT TOKENS
+   --bento-theme-spacing-01..10 (4/8/12/16/24/32/36/48/56/64) → --bento-space-01..10
+   --bento-theme-border-radii-{01,02,03,none,circle} → --bento-radius-{sm,lg,md,none,circle}
+     (01=2px small chips&badges, 03=8px DEFAULT for buttons/inputs/cards, 02=16px
+      large cards/modals, circle=50%; 999px pills are hand-written, not tokenized)
+   --bento-theme-elevation-shadow-{raised,overlay-top,overlay-bottom,
+     overflow-top/bottom/left/right,drawer-from-left/right}
+   --bento-theme-icon-{sm,md,lg,xl} (16/20/24/28)
+   --bento-theme-opacity-{disabled,loading,overlay} (0.4 / 0.2 / 0.65)
+   --bento-component-<name>-*   ~400 per-component tokens (button, input, table,
+     modal, drawer, tooltip, badge, avatar, chip, switch, slider, alert, snackbar,
+     bulk-action-bar, list-item, calendar-day, rail, navdrawer, header, footer…) */
+@import url("./tokens/layout.css");
+
+/* 4. RAW FIGMA VARIABLES (chart color primitives + responsive modes)
+   --hs-ref-color-*                  raw hues feeding the chart palette
+   --hs-chart-color-categorical-1..10-{base,compare,on-base,on-compare,shade}
+   --hs-chart-color-{critical,warning,positive,...}-*
+   --hs-sys-*                        Figma "system" tier (stroke weights, touch
+                                      targets, more chart tokens)
+   --hs-comp-modal-{small,medium,large}-{width,height}-max-{px,percentage}
+                                      SCOPED under :root[data-mode="tablet"],
+                                      :root[data-mode="desktop"], :root[data-mode="max"]
+                                      — see THEME SWITCHING below.
+   ⚠ 3,449 lines, ~1,700 custom properties. This is the single largest token
+   file in the system and is imported, never re-typed, to avoid transcription
+   drift. */
+@import url("./tokens/fig-tokens.css");
+
+/* 5. CONVENIENCE ALIASES + BASE ELEMENT STYLES
+   --hs-*   short, memorable names for the --bento-* tokens above (surface,
+            border, fg, action-primary, cat-1..10, radii-*, elev-*, sp-*, type-*)
+   Also sets base element styles: body, h1–h4, p, a:hover, code — see
+   components.css for the .hs-* / .cf class library that consumes these. */
+@import url("./tokens/aliases.css");
+
+/* 6. CHART COLOR MIGRATION SHIM
+   Redefines --bento-theme-color-visual-data-* (locally authored, undocumented)
+   as aliases onto the documented --hs-chart-color-* tokens from §4, so there is
+   one source of truth and charts inherit any future dark-mode chart values.
+   New chart work should reference --hs-chart-color-* directly. */
+@import url("./tokens/chart-alias.css");
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   THEME SWITCHING — what actually exists vs. what the system's own docs claim
+   ══════════════════════════════════════════════════════════════════════════
+
+   THE DOCUMENTED CLAIM (this kit's own readme / styles.css header):
+     "--hs-* Figma-variable tokens across 5 theme/mode scopes
+      (light/dark/brand2020 · tablet/desktop/max breakpoint modes)"
+
+   WHAT IS ACTUALLY IN tokens/fig-tokens.css, verified by reading the file:
+
+   ✅ REAL — 3 responsive breakpoint scopes, each overriding ONLY the modal
+      width/height-cap tokens (--hs-comp-modal-{small,medium,large}-*):
+        :root[data-mode="tablet"]  { ... }
+        :root[data-mode="desktop"] { ... }
+        :root[data-mode="max"]     { ... }
+      To switch: set data-mode="tablet" | "desktop" | "max" on <html> (or any
+      ancestor of the modal). No other component reads a --hs-comp-modal-*
+      token, so this scope currently affects modal sizing only.
+
+   ❌ NOT REAL — there is NO [data-theme="dark"] block and NO
+      [data-mode="brand2020"] block anywhere in this file, or anywhere else in
+      the project. Confirmed by exhaustive search, not a sampling assumption.
+      Every --bento-*, --hs-*, and --hs-sys-* color token above resolves to
+      exactly one value: the light theme. There is no dark-mode value to
+      switch TO, and no attribute that would trigger a switch if there were.
+
+   PRACTICAL IMPLICATION: this export ships ONE color theme (light) and ONE
+   real mode axis (tablet/desktop/max, modal-sizing only). If your product
+   needs a dark theme or a brand2020 accent theme, it does not exist yet in
+   Bento — budget it as new token work, not a flag flip. Do not invent
+   [data-theme="dark"] values to fill this gap; that would ship undocumented,
+   unapproved color decisions under the Bento name. Flag it back to the DX
+   team as a real gap between the kit's documentation and its shipped tokens.
+
+   ══════════════════════════════════════════════════════════════════════════
+   NAMING KEY
+   ══════════════════════════════════════════════════════════════════════════
+   --bento-palette-ref-*   raw hue ramp value (never consumed by components directly)
+   --bento-system-sys-*    semantic ramp (aliases a palette ramp)
+   --bento-theme-*         the tier component CSS should reference
+   --bento-component-*     one-off tokens scoped to a single component
+   --hs-*                  short aliases onto --bento-* (aliases.css) — safe to use,
+                            but --bento-* is the source of truth if the two ever disagree
+   --hs-ref-* / --hs-sys-* / --hs-comp-*   raw Figma-variable tier (fig-tokens.css) —
+                            mostly consumed indirectly via --hs-chart-color-* and the
+                            :root[data-mode] modal-size overrides above
+   ══════════════════════════════════════════════════════════════════════════ */

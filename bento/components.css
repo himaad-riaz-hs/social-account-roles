@@ -1,0 +1,57 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   BENTO — COMPONENT CLASS LIBRARY
+   Engineering export. Single import point over the real, unmodified class
+   library files (copied verbatim into ./components/). Load tokens.css FIRST —
+   every rule below reads --bento-*/--hs-* custom properties, none are hard-coded.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Figma text styles (heading/body/etc as literal classes matching Figma layer
+   names) — used by some preview cards; components.css's .hs-* classes below
+   are the ones actual components render. */
+@import url("./css/fig-typography.css");
+
+/* THE BASE LIBRARY (727 lines). Box-sizing reset, Material Symbols base rule,
+   then: .hs-btn(--primary/secondary/outlined/ghost/icon/sm), .hs-field(-label/
+   -desc/-hint), .hs-input(--error), .hs-textarea, .hs-badge(--neutral/positive/
+   warning/negative/discovery/info/square/dot/interactive), .hs-chip, .cf (chip
+   filter: .open/.selected/[disabled]/.chev/.ct/.x), .hs-input-tag, .hs-card
+   (--quiet), .hs-avatar(--xs/sm/md/lg/xl), .hs-alert(--positive/warning/negative),
+   .hs-toggle (switch), .hs-check/.hs-radio (checkbox/radio — drawn as Material
+   Symbols glyphs via ::before, NOT native inputs — see README "Known gaps"),
+   .hs-divider, .hs-tabs/.hs-tab(.is-active), .acc-* (accordion), .hs-option
+   (listbox row), .hs-select. */
+@import url("./css/components-base.css");
+
+/* THE EXTENDED LIBRARY (813 lines). Everything components-base.css doesn't
+   cover: .hs-spinner, .hs-tooltip(-wrap/--top/bottom/left/right), .hs-progress
+   (--sm/lg), .hs-skeleton(--circle/text), .hs-empty, .hs-stepper, .hs-slider,
+   .hs-uploader, .hs-table (+ .hs-table-wrap/-bulkrow/-selectall/-result/
+   -emptyrow, tr.is-selected, td/th.num, .is-sticky — see README "Known gaps"
+   for how far this reuses outside <table>), .hs-toggle-group, .hs-choice,
+   .hs-thumb, .hs-overlay/.hs-modal/.hs-drawer(-header/-body)/.hs-popover (see
+   README "Known gaps" re: confirm-dialog elevation), .hs-menu(-item/-sep/
+   -label), .hs-emoji-btn/.hs-reaction, .hs-carousel, .hs-action-bar(--floating/
+   outlined), .hs-profile-picker, .hs-tree-row, .hs-chip-assist, .hs-steps,
+   .hs-msg(--in/out), .hs-link-preview, .hs-ovly(--filled/ghost/icon/inverse),
+   .hs-option-trigger, .hs-org-trigger, .hs-tp-input/.hs-tp-opt, .hs-list-item,
+   .hs-footer, .hs-sb (legacy side-nav rail), .hs-cal-chip, .hs-emoji-cat/-cell,
+   .hs-link (hyperlink), .hs-info (info button), .hs-header/-subheader,
+   .hs-snackbar, .hs-bulk-bar (bulk action bar — standalone, see README),
+   .hs-tag-list/.hs-chip-list, .hs-event-note, .hs-cal-card, .hs-file-row,
+   .hs-char-count, .hs-label-row, .hs-submenu, .hs-listed-progress/-step,
+   .hs-conversation(-day), .hs-reaction-group, .hs-cal-grid/-dow/-day,
+   .hs-control-list/-row, .hs-avatar-stack, .hs-tree, focus-ring batch rules,
+   .hs-ovly-icon, .hs-icon-active, .hs-trailing-icon, .hs-input-tag-btn,
+   .hs-chip-clear, .hs-expander, .hs-selectable-text, .hs-engagement,
+   .hs-visually-hidden, .hs-list-heading, .hs-snackbar-btn, .hs-nesting-space,
+   .hs-touch, .hs-focus-border, .hs-th, .hs-menu-artwork, .hs-accordion-actions,
+   .hs-card-slot, .hs-selection-cleaner, .hs-bulk-overlay (bulk SELECTION
+   overlay — a different, also-standalone class — see README), .hs-msg-media,
+   .hs-progress-dot/-actions, .hs-time-input/-seg, .hs-nav-heading,
+   .hs-trailing-text, .hs-dd-item, .hs-row-artwork/-media, .hs-tree-select(-*),
+   .hs-input-payment(-*), .hs-panel, .hs-mobile-navbar(-*),
+   .hs-mobile-sheet-action/-bottom(-*), .hs-navdrawer(-*) (288px product
+   sub-nav), .hs-rail(-*) (80px global product rail), .hs-metric(-*),
+   .hs-icon (brand/network SVG two-tone rule), .hs-appcore/.hs-suite-banner
+   (68px)/.hs-appbody (Suite shell skeleton — see shell.html). */
+@import url("./css/components-ext.css");
